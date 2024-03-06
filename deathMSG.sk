@@ -1,0 +1,87 @@
+on death of player:
+    if death message contains "was shot by":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾저격﴿"
+    else if death message contains "was pummeled by":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾구타﴿"
+    else if death message contains "was pricked to death":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾찔림﴿"
+    else if death message contains "walked into a cactus whilst trying to escape":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾찔림﴿"
+    else if death message contains "drowned":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾익사﴿"
+    else if death message contains "kinetic energy":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾충돌﴿"
+    else if death message contains "blew up":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾폭발﴿"
+    else if death message contains "blown up":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾폭발﴿"
+    else if death message contains "[Intentional Game Design]":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾침대폭발﴿"
+    else if death message contains "ground too hard":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾곤두박질﴿"
+    else if death message contains "fell from":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾떨어짐﴿"
+    else if death message contains "fell off":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾떨어짐﴿"
+    else if death message contains "fell while":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾떨어짐﴿"
+    else if death message contains "fall":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾떨어짐﴿"
+    else if death message contains "impaled":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾찔림﴿"
+    else if death message contains "flames":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾화염﴿"
+    else if death message contains "burned":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾화염﴿"
+    else if death message contains "fire whilst":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾화염﴿"
+    else if death message contains "burnt to a crisp":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾화염﴿"
+    else if death message contains "squashed":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾짓눌림﴿"
+    else if death message contains "skewered":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾찔림﴿"
+    else if death message contains "bang":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾굉음폭발﴿"
+    else if death message contains "swim in lava":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾용암﴿"
+    else if death message contains "struck by lightning":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾벼락﴿"
+    else if death message contains "floor was lava":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾용암바닥﴿"
+    else if death message contains "danger zone":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾용암바닥﴿"
+    else if death message contains "magic":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾마법﴿"
+    else if death message contains "frozen":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾동상﴿"
+    else if death message contains "froze":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾동상﴿"
+    else if death message contains "was slain":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾죽임당함﴿"
+    else if death message contains "fireballed by":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾화염구﴿"
+    else if death message contains "stung":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾쏘임﴿"
+    else if death message contains "starved":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾굶음﴿"
+    else if death message contains "obliterated":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾음파﴿"
+    else if death message contains "suffocated":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾질식﴿"
+    else if death message contains "squished":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾끼임﴿"
+    else if death message contains "berry bush":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾덤불﴿"
+    else if death message contains "trying to hurt":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾가시 마법﴿"
+    else if death message contains "out of the world":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾공허﴿"
+    else if death message contains "live in the same world":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾공허﴿"
+    else if death message contains "withered":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾시듦﴿"
+    else if death message contains "dehydration":
+        set the death message to "&8☠ %victim% ☠ &a&l﴾탈수﴿"
+    else:
+        set the death message to "&8☠ %victim% ☠"

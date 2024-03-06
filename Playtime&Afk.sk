@@ -1,0 +1,111 @@
+# 플레이타임
+on join:
+    if {Tmin::%uuid of player%} is not set:
+        set {Tmin::%uuid of player%} to 0
+        set {Thour::%uuid of player%} to 0
+        set {Tday::%uuid of player%} to 0
+    else if {Thour::%uuid of player%} is not set:
+        set {Thour::%uuid of player%} to 0
+        set {Tday::%uuid of player%} to 0
+    else if {Tday::%uuid of player%} is not set:
+        set {Tday::%uuid of player%} to 0
+
+every 1 second:
+    loop all players:
+        if {ONafk::%uuid of loop-player%} is not set:
+            add 1 to {Tsec::%uuid of loop-player%}
+            add 1 to {RankTime::%uuid of loop-player%}
+            if {Tsec::%uuid of loop-player%} = 60:
+                set {Tsec::%uuid of loop-player%} to 0
+                add 1 to {Tmin::%uuid of loop-player%}
+                if {Tmin::%uuid of loop-player%} = 60:
+                    set {Tmin::%uuid of loop-player%} to 0
+                    add 1 to {Thour::%uuid of loop-player%}
+                    if {Thour::%uuid of loop-player%} = 24:
+                        set {Thour::%uuid of loop-player%} to 0
+                        add 1 to {Tday::%uuid of loop-player%}
+
+command /플레이타임:
+    trigger:
+        if {Tday::%uuid of player%} != 0:
+            send "%nl%%nl%&6&l플레이타임 : &e%{Tday::%uuid of player%}%&6&l일 &e%{Thour::%uuid of player%}%&6&l시간"
+        else if {Thour::%uuid of player%} != 0:
+            send "%nl%%nl%&6&l플레이타임 : &e%{Thour::%uuid of player%}%&6&l시간 &e%{Tmin::%uuid of player%}%&6&l분"
+        else:
+            send "%nl%%nl%&6&l플레이타임 : &e%{Tmin::%uuid of player%}%&6&l분 &e%{Tsec::%uuid of player%}%&6&l초"
+
+command /playtime:
+    trigger:
+        execute player command "/플레이타임"
+
+# AFK - 잠수
+options: # 잠수시간
+    nowafk : 600
+
+every 1 second:
+    loop all players:
+        add 1 to {Tafk::%uuid of loop-player%}
+        if {loc::%uuid of loop-player%} != location of loop-player: # 잠수해제 1 - 시야
+            set {Tafk::%uuid of loop-player%} to 0
+            if {ONafk::%uuid of loop-player%} is set:
+                send "&4&l[&cAFK&4&l] &7OFF" to loop-player
+                reset loop-player's tablist name
+                delete {ONafk::%uuid of loop-player%}
+        if {ONafk::%uuid of loop-player%} is not set:    
+            if {Tafk::%uuid of loop-player%} >= {@nowafk}: # 잠수감지
+                set {ONafk::%uuid of loop-player%} to true
+                set loop-player's tablist name to "&4[&cAFK&4] &7%loop-player%"
+                send "&4&l[&cAFK&4&l] &aON" to loop-player
+        set {loc::%uuid of loop-player%} to location of loop-player
+
+on chat: # 잠수해제 2 - 채팅
+    set {Tafk::%uuid of player%} to 0
+    if {ONafk::%uuid of player%} is set:
+        send "&4&l[&cAFK&4&l] &7OFF"
+        reset player's tablist name
+        delete {ONafk::%uuid of player%}
+
+# 플레이타임 랭킹
+command /랭킹:
+    trigger:    
+        loop {RankTime::*}:
+            set {_tempRank::%loop-index%} to "%loop-value%"
+        set {_len} to size of {_tempRank::*}
+        set {_i} to 1
+
+        while {_i} <= {_len}:
+            set {_Time::%{_i}%} to 0
+            loop {_tempRank::*}:
+                if "%loop-value%" parsed as integer > {_Time::%{_i}%}:
+                    set {_Time::%{_i}%} to "%loop-value%" parsed as integer
+                    set {_UUID::%{_i}%} to "%loop-index%"
+            delete {_tempRank::%{_UUID::%{_i}%}%}
+            if {_UUID::%{_i}%} = "%uuid of player%":
+                set {_myrank} to {_i}
+            add 1 to {_i}
+        
+        send "%nl%%nl%%nl%%nl%&d-----------------------------------------------------"
+        send "&e✬ &6플레이타임 랭킹 &e✬%nl%"
+        send "&b&l〖1〗 &b𝄆 %{_UUID::1} parsed as offline player% 𝄇%nl% &f&l[ &e%{Tday::%{_UUID::1}%}%&a일 &e%{Thour::%{_UUID::1}%}%&a시간 &e%{Tmin::%{_UUID::1}%}%&a분 &f&l]%nl%"
+        if {_UUID::2} is not set:
+            send "&3&l〖2〗 &3𝄆 &k%{_UUID::2} parsed as offline player% &3𝄇%nl% &f&l[ &e0&a일 &e0&a시간 &e0&a분 &f&l]%nl%"
+            send "&9&l〖3〗 &9𝄆 &k%{_UUID::3} parsed as offline player% &9𝄇%nl% &f&l[ &e0&a일 &e0&a시간 &e0&a분 &f&l]"
+        else if {_UUID::3} is not set:
+            send "&3&l〖2〗 &3𝄆 %{_UUID::2} parsed as offline player% 𝄇%nl% &f&l[ &e%{Tday::%{_UUID::2}%}%&a일 &e%{Thour::%{_UUID::2}%}%&a시간 &e%{Tmin::%{_UUID::2}%}%&a분 &f&l]%nl%"
+            send "&9&l〖3〗 &9𝄆 &k%{_UUID::3} parsed as offline player% &9𝄇%nl% &f&l[ &e0&a일 &e0&a시간 &e0&a분 &f&l]"
+        else:
+            send "&3&l〖2〗 &3𝄆 %{_UUID::2} parsed as offline player% 𝄇%nl% &f&l[ &e%{Tday::%{_UUID::2}%}%&a일 &e%{Thour::%{_UUID::2}%}%&a시간 &e%{Tmin::%{_UUID::2}%}%&a분 &f&l]%nl%"
+            send "&9&l〖3〗 &9𝄆 %{_UUID::3} parsed as offline player% 𝄇%nl% &f&l[ &e%{Tday::%{_UUID::3}%}%&a일 &e%{Thour::%{_UUID::3}%}%&a시간 &e%{Tmin::%{_UUID::3}%}%&a분 &f&l]"
+        if {_myrank} = 1:
+            send "%nl%%nl%&b&l〖%{_myrank}%〗 &b𝄆 %player% 𝄇"
+        else if {_myrank} = 2:
+            send "%nl%%nl%&3&l〖%{_myrank}%〗 &3𝄆 %player% 𝄇"
+        else if {_myrank} = 3:
+            send "%nl%%nl%&9&l〖%{_myrank}%〗 &9𝄆 %player% 𝄇"
+        else:
+            send "%nl%%nl%&7&l〖%{_myrank}%〗 &7𝄆 %player% 𝄇"
+        send "&d-----------------------------------------------------"
+
+command /ranking:
+    trigger:
+        execute player command "/랭킹"

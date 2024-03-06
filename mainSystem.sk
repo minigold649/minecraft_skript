@@ -1,0 +1,55 @@
+# 첫 접속
+on first join:
+    send "%nl%%nl%%nl%%nl%&d-----------------------------------------------------%nl%"
+    send "&a&lWoodWorld&f&l에 오신 것을 환영합니다 !%nl%"
+    send "&3/&l규칙 &f&l을 입력해 서버의 규칙을 확인해주세요 !%nl%"
+    send "&f&l궁금한점이 있으시면 &3/&l도움말 &f&l을 입력해주세요 !%nl%"
+    send "&d-----------------------------------------------------"
+
+# 입퇴장 메세지
+on join:
+    set join message to "&2&l⇧ %player% ⇧"
+
+on quit:
+    set quit message to "&4&l⇩ %player% ⇩"
+
+                # 지도 사이트
+            #command /map:
+            #   trigger:
+            #      message "%nl%%nl%<link:http://woodworld.kro.kr:8080/>&2&l[ &a세계지도 보기 &2&l]"
+            #command /지도:
+            #   trigger:
+            #      execute player command "/map"
+
+# 탭리스트 (플레이어목록)
+every 1 tick:
+    loop all players:
+        set tab header to "%nl%&f&l☁ &a&lWood World &f&l☁%nl%&f[ &7Survival &f]%nl%" and footer to "%nl%&2&l접속자 : &6%number of all players%/20%nl% &e20%now% %nl%%nl% &5&l서버에 대해 더 알고싶다면? &3/&l도움말 %nl%" for loop-player
+
+# 서버 오픈일 및 총 가동시간
+every 1 second:
+    add 1 to {Tsec.ServerTime}
+    if {Tsec.ServerTime} = 60:
+        set {Tsec.ServerTime} to 0
+        add 1 to {Tmin.ServerTime}
+        if {Tmin.ServerTime} = 60:
+            set {Tmin.ServerTime} to 0
+            add 1 to {Thour.ServerTime}
+            if {Thour.ServerTime} = 24:
+                set {Thour.ServerTime} to 0
+                add 1 to {Tday.ServerTime}
+command /가동시간:
+    trigger:
+        if {Tmin.ServerTime} is not set:
+            set {Tmin.ServerTime} to 0
+            set {Thour.ServerTime} to 0
+            set {Tday.ServerTime} to 0
+        else if {Thour.ServerTime} is not set:
+            set {Thour.ServerTime} to 0
+            set {Tday.ServerTime} to 0
+        else if {Tday.ServerTime} is not set:
+            set {Tday.ServerTime} to 0
+        send "%nl%%nl%&b&l서버가동시간 : &e%{Tday.ServerTime}%&b&l일 &e%{Thour.ServerTime}%&b&l시간 &e%{Tmin.ServerTime}%&b&l분 &e%{Tsec.ServerTime}%&b&l초"
+command /오픈일:
+    trigger:
+        send "%nl%%nl%&b&l서버오픈일 : &e2023&b&l년 &e06&b&l월 &e16&b&l일"

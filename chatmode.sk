@@ -1,0 +1,76 @@
+# 지역채팅 범위
+options:
+	d: 500
+
+# 채팅모드 전환
+command /localchat: # 지역
+    trigger:
+        if {local_chat::%uuid of player%} is set:
+            send "%nl%%nl%&7이미&2&l「&a지역채팅&2&l」&7사용중입니다."
+        else:
+            set {local_chat::%uuid of player%} to "true"
+            send "%nl%%nl%&2&l「&a지역채팅&2&l」&7으로 전환되었습니다."
+
+command /지역채팅:
+    trigger:
+        execute player command "/localchat"
+
+command /l:
+    trigger:
+        execute player command "/localchat"
+
+
+command /globalchat: # 전체
+    trigger:
+        if {local_chat::%uuid of player%} is set:
+            delete {local_chat::%uuid of player%}
+            send "%nl%%nl%&3&l「&b전체채팅&3&l」&7으로 전환되었습니다."
+        else:
+            send "%nl%%nl%&7이미&3&l「&b전체채팅&3&l」&7사용중입니다."
+        
+command /전체채팅:
+    trigger:
+        execute player command "/globalchat"
+
+command /g:
+    trigger:
+        execute player command "/globalchat"
+
+# 채팅출력
+on chat:
+    if {local_chat::%uuid of player%} is set:
+        set {_p::*} to players in radius {@d} around player
+        if size of {_p::*} > 1:
+            set chat format to "&2&l「&f%player%&2&l」&f%message%"
+            set recipients to {_p::*}
+        else:
+            cancel event
+            send "%nl%%nl%&2&l「&a지역채팅&2&l」&e{@d}&7블럭 이내에 사람이 없습니다."
+            send "             &7전체채팅을 원하시다면 &3/전체채팅 &7을 입력해주세요."
+    else:
+        set chat format to "&3&l「&7%player%&3&l」&7%message%"
+
+# 근처 플레이어
+command /near:
+    trigger:
+        set {_p::*} to players in radius {@d} around player
+        loop {_p::*}:
+            if "%loop-value%" is "%player%":
+                remove "%loop-value%" from {_p::*}
+        if {_p::*} is set:
+            send "%nl%%nl%%nl%%nl%&2-----------------------------------------------------"
+            loop {_p::*}:
+                send "&a%loop-value%"
+            send ""
+            send "&2&l%size of {_p::*}% &2Player"
+            send "&2-----------------------------------------------------"
+        else:
+            send "%nl%%nl%&7주변에 플레이어가 없습니다."
+
+command /around:
+    trigger:
+        execute player command "/near"
+
+command /주변플레이어:
+    trigger:
+        execute player command "/near"
